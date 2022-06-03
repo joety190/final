@@ -1,18 +1,21 @@
 import React from 'react'
-import { Card, Row } from 'react-bootstrap'
+import { Card, Container, Row } from 'react-bootstrap'
 import Button  from 'react-bootstrap/Button'
 import Image from 'react-bootstrap/Image'
 
 export default function Item(props) {
   const {item , onAdd} = props
+  
   return (
-    <Card bg='success' >
+    <Container fluid="md">
+    <Card fluid='true' bg='success'>
       <Image thumbnail src={item.img}>
       </Image>
       <h3>{item.itemDetail}</h3>
       <h3>${item.price}</h3>
       <Button onClick={()=> onAdd(item)}>Add to cart</Button>
     </Card>
+    </Container>
   )
 }
 

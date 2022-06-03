@@ -40,14 +40,26 @@ const onAdd = (item) => {
     setCartItems([...cartItems, {... item, qty: 1 }])
   }
 };
+const onRemove = (item) => {
+  const exist = cartItems.find((x) => x.id === item.id);
+  if(exist.qty === 1) { 
+    setCartItems(cartItems.filter((x) => x.id !== item.id));
+  } else {
+    setCartItems(
+    cartItems.map((x) =>
+       x.id === item.id ? {...exist, qty: exist.qty - 1} : x
+      ))
+  }
+}
 
 return (
         <div>
           
         <NavBarHere/>
-        <MainComp onAdd={onAdd} items={items}/>
+        <Logo/>
+       {/* <MainComp onAdd={onAdd} items={items} /> */}
         <RouterArea/>
-        <CheckCart onAdd={onAdd} cartItems={cartItems}/>
+        {/* <CheckCart onAdd={onAdd} onRemove={onRemove} cartItems={cartItems}/> */}
         </div>
 
 );
@@ -58,10 +70,10 @@ function RouterArea() {
     <div>
       <Container>
        
-     
+
 
       <Navbar expand="lg" variant="light" bg="light">
-      <ButtonGroup>
+      {/* <ButtonGroup>
         <Button variant="outline-secondary">
         <Link to="/home">Home</Link>
         </Button>
@@ -71,7 +83,7 @@ function RouterArea() {
         <Button variant="outline-secondary">
         <Link to="/cart">Shopping Cart</Link>
         </Button>
-      </ButtonGroup>
+      </ButtonGroup> */}
       <Switch>
         <Route path="/styles">
             <Styles />
@@ -91,9 +103,7 @@ function RouterArea() {
 function Home() {
    return (
      <Card>
-       <Logo/>
-    <About/>
-    
+        <About/>
    </Card>
    )
 };
@@ -101,10 +111,39 @@ function Home() {
 
 
 function Cart() {
+  const { items } = shirts;
+
+const [cartItems, setCartItems] = useState([]);
+
+const onAdd = (item) => {
+  const exist = cartItems.find((x) => x.id === item.id);
+  if(exist) {
+    setCartItems(
+      cartItems.map((x) =>
+       x.id === item.id ? {...exist, qty: exist.qty + 1} : x
+      )
+      );
+  } else {
+    setCartItems([...cartItems, {... item, qty: 1 }])
+    
+  }
+};
+const onRemove = (item) => {
+  const exist = cartItems.find((x) => x.id === item.id);
+  if(exist.qty === 1) { 
+    setCartItems(cartItems.filter((x) => x.id !== item.id));
+  } else {
+    setCartItems(
+    cartItems.map((x) =>
+       x.id === item.id ? {...exist, qty: exist.qty - 1} : x
+      ))
+      
+  }
+}
   return (
   <div>
-    <Logo/>
-    <CheckCart/>
+    {/* <Logo/> */}
+    <CheckCart onAdd={onAdd} onRemove={onRemove} cartItems={cartItems}/>
 
 
   Logo created by <a href="https://www.designevo.com/" title="Free Online Logo Maker">DesignEvo logo maker</a></div>
@@ -112,12 +151,38 @@ function Cart() {
 }
 
 function Styles() {
- 
+  const { items } = shirts;
+
+  const [cartItems, setCartItems] = useState([]);
+  
+  const onAdd = (item) => {
+    const exist = cartItems.find((x) => x.id === item.id);
+    if(exist) {
+      setCartItems(
+        cartItems.map((x) =>
+         x.id === item.id ? {...exist, qty: exist.qty + 1} : x
+        ));
+    } else {
+      setCartItems([...cartItems, {... item, qty: 1 }])
+    }
+  };
+  const onRemove = (item) => {
+    const exist = cartItems.find((x) => x.id === item.id);
+    if(exist.qty === 1) { 
+      setCartItems(cartItems.filter((x) => x.id !== item.id));
+    } else {
+      setCartItems(
+      cartItems.map((x) =>
+         x.id === item.id ? {...exist, qty: exist.qty - 1} : x
+        ))
+    }
+  }
   return (
     <div>
-      <Card>
-      <Logo/>
-    
+      <Card flex="lg">
+        {/* <Logo /> */}
+        <MainComp onAdd={onAdd} items={items} />
+        <CheckCart onAdd={onAdd} onRemove={onRemove} cartItems={cartItems}/>
       </Card>
       </div>
 )}
