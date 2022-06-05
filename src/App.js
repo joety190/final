@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
+
 import Card from 'react-bootstrap/Card';
 import {
   BrowserRouter as Router,
@@ -18,13 +17,16 @@ import Logo from './Logo';
 import shirts from './ShirtItems';
 import CheckCart from './components/cart';
 import MainComp from './components/maincomp';
-
+import Login from './components/login';
 
 
 
 
 
 export default function App() {
+
+
+
 const { items } = shirts;
 
 const [cartItems, setCartItems] = useState([]);
@@ -111,46 +113,40 @@ function Home() {
 
 
 function Cart() {
-  const { items } = shirts;
-
-const [cartItems, setCartItems] = useState([]);
-
-const onAdd = (item) => {
-  const exist = cartItems.find((x) => x.id === item.id);
-  if(exist) {
-    setCartItems(
-      cartItems.map((x) =>
-       x.id === item.id ? {...exist, qty: exist.qty + 1} : x
-      )
-      );
-  } else {
-    setCartItems([...cartItems, {... item, qty: 1 }])
-    
-  }
-};
-const onRemove = (item) => {
-  const exist = cartItems.find((x) => x.id === item.id);
-  if(exist.qty === 1) { 
-    setCartItems(cartItems.filter((x) => x.id !== item.id));
-  } else {
-    setCartItems(
-    cartItems.map((x) =>
-       x.id === item.id ? {...exist, qty: exist.qty - 1} : x
-      ))
-      
-  }
+const userLogin = {
+  email:"admin@admin.com",
+  password:"admin123"
 }
+const [user, setUser] = useState({email:""});
+ const signIn = details => {
+  
+  if (details.email == userLogin.email && details.password == userLogin.password)
+
+  setUser({
+    email: details.email,
+    password: details.password
+  });
+  else {
+   console.log("wrong login")
+ }
+ }
+
   return (
   <div>
-    {/* <Logo/> */}
-    <CheckCart onAdd={onAdd} onRemove={onRemove} cartItems={cartItems}/>
-
-
-  Logo created by <a href="https://www.designevo.com/" title="Free Online Logo Maker">DesignEvo logo maker</a></div>
+    {(user.email != "") ? (
+      <div className='welcome'>
+        <h2> Welcome, <span>{user.email}</span></h2>
+      </div>
+    ) : (
+    <Login signIn={signIn}/>
+    )}
+  Logo created by <a href="https://www.designevo.com/" title="Free Online Logo Maker">DesignEvo logo maker</a>
+  </div>
   )
 }
 
 function Styles() {
+
   const { items } = shirts;
 
   const [cartItems, setCartItems] = useState([]);
